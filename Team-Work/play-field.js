@@ -1,72 +1,84 @@
 /**
  * Created by PC on 28.7.2014 г..
  */
+var ctx;
+var cW, cH;
+
+var boxImage = new Image(),
+bricksImage = new Image(),
+floorImage = new Image();
+boxImage.src = "images/box.PNG",
+bricksImage.src = "images/bricks.jpg",
+floorImage.src = "images/floor.PNG";
+
+var keyPressed = '';
+var renderCounter = 100;
+
+var fieldMatrix = [
+    [1,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1]
+];
 
 function initCanvas() {
-    var ctx = document.getElementById("canvas").getContext("2d");
-    var cW = ctx.canvas.width, cH = ctx.canvas.height;
-    ctx.strokeStyle = "black";
+    ctx = document.getElementById("canvas").getContext("2d");
+    cW = ctx.canvas.width, cH = ctx.canvas.height;
+    var animateInterval;
 
-    function renderField() {
-        for (var i = 0; i < cH/50; i++) {
-            ctx.beginPath();
-            ctx.moveTo(100*i,0);
-            ctx.lineTo(100*i,cH);
-            ctx.moveTo(0,100*i);
-            ctx.lineTo(cW,100*i);
-            ctx.stroke();
-            ctx.closePath();
-        }
-    }
+    var box = new Player(5,1);
 
-    function Player(x,y) {
-        this.x = x;
-        this.y = y;
-        this.w = 98;
-        this.h = 98;
-        ctx.fillStyle = "yellow";
-        this.render = function () {
-        ctx.fillRect(this.x*100,this.y*100,this.w,this.h);
-        }
-    }
-
-    var box = new Player(5,0);
     function animate() {
         ctx.save();
         ctx.clearRect(0,0,cW,cH);
 
-        renderField();
-        box.render();
+        drawField();
+        drawObjects();
+        box.draw();
 
         ctx.restore();
     }
 
-    var animateInterval = setInterval(animate, 30);
+    animateInterval = setInterval(animate, 20);
 
    document.addEventListener('keydown', function(event) {
-        var keyPressed = String.fromCharCode(event.keyCode);
-//        alert(keyPressed + " | " + event.keyCode)
+
+       clearPlayerPosition(box.x,box.y);
        if (event.keyCode == 37) { // left button pressed
-           if (box.x > 0) {
+           if (fieldMatrix[box.y][box.x-1] == 0) {
+               keyPressed = 'left';
                box.x--;
            }
        } else if (event.keyCode == 39) { // right button pressed
-           if (box.x * 100 < cW-100) {
+           if (fieldMatrix[box.y][box.x+1] == 0) {
+               keyPressed = 'right';
                box.x++;
            }
        } else if (event.keyCode == 38) { // up button pressed
-           if (box.y > 0) {
+           if (fieldMatrix[box.y-1][box.x] == 0) {
                box.y--;
            }
-       } else if (event.keyCode == 40) { // down button pressed
+       } else if (fieldMatrix[box.y+1][box.x] == 0) { // down button pressed
            if (box.y * 100 < cH - 100) {
                box.y++;
            }
        }
-    })
+       updatePlayerPosition(box.x,box.y);
+   });
+
+    document.addEventListener('keyup', function(event) {
+
+        if (event.keyCode == 37) { // left button released
+                keyPressed = '';
+        } else if (event.keyCode == 39) { // right button released
+                keyPressed = '';
+        }
+    });
 
 }
 
 window.addEventListener('load', function (event) {
     initCanvas();
+
 });

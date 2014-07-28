@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>A script on this page starts this clock:</p>
+
+<p id="demo"></p>
+<p id="demo2"></p>
+
+<button id="start">Start time</button>
+<button onclick="myStopFunction()">Stop time</button>
+
+<script>
+
+    var start = document.getElementById('start');
+    var t = 0;
+    var myVar;
+    var yourVar;
+
+    var t2 = 0;
+
+    function startInterver() {
+        myVar = setInterval(myTimer, 1000);
+        yourVar = setInterval(doSomething, 500);
+    }
+
+    function myTimer() {
+        t++;
+        document.getElementById("demo").innerHTML = t;
+    }
+
+    function myStopFunction() {
+        clearInterval(myVar);
+        clearInterval(yourVar);
+    }
+
+    function doSomething() {
+        t2++;
+        document.getElementById("demo2").innerHTML = t2;
+
+    }
+    start.addEventListener('click', startInterver );
+
+</script>
+
+</body>
+</html>
