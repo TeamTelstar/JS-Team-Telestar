@@ -1,6 +1,4 @@
-/**
- * Created by PC on 28.7.2014 г..
- */
+
 var ctx;
 var cW, cH;
 
@@ -44,7 +42,6 @@ function initCanvas() {
 
    document.addEventListener('keydown', function(event) {
 
-       clearPlayerPosition(box.x,box.y);
        if (event.keyCode == 37) { // left button pressed
            if (fieldMatrix[box.y][box.x-1] == 0) {
                keyPressed = 'left';
@@ -57,24 +54,16 @@ function initCanvas() {
            }
        } else if (event.keyCode == 38) { // up button pressed
            if (fieldMatrix[box.y-1][box.x] == 0) {
+               keyPressed = 'up';
                box.y--;
            }
        } else if (fieldMatrix[box.y+1][box.x] == 0) { // down button pressed
            if (box.y * 100 < cH - 100) {
+               keyPressed = 'down';
                box.y++;
            }
        }
-       updatePlayerPosition(box.x,box.y);
    });
-
-    document.addEventListener('keyup', function(event) {
-
-        if (event.keyCode == 37) { // left button released
-                keyPressed = '';
-        } else if (event.keyCode == 39) { // right button released
-                keyPressed = '';
-        }
-    });
 
 }
 
