@@ -1,6 +1,4 @@
-/**
- * Created by PC on 28.7.2014 г..
- */
+
  function drawField() {
     for (var i = 0; i < cH/50; i++) {
         ctx.beginPath();
@@ -16,38 +14,7 @@
 function drawObjects() {
     for (var row = 0; row < fieldMatrix.length; row++) {
         for (var col = 0; col < fieldMatrix[row].length; col++) {
-            switch (fieldMatrix[row][col]) {
-                case 0: ctx.drawImage(floorImage, col*100, row*100,98,98); break;
-                case 1: ctx.drawImage(bricksImage, col*100, row*100,98,98); break;
-                case 2: ctx.drawImage(boxImage, col*100, row*100,98, 98); break;
-            }
-        }
-    }
-}
-
-function box (matrix) {
-    this.x = getX(matrix);
-    this.y = getY(matrix);
-    this.w = 98;
-    this.h = 98;
-
-    function getX (matrix) {
-        for (var row = 0; row < matrix.length; row++) {
-            for (var col = 0; col < matrix[row].length; col++) {
-                if (matrix[row][col] == 2) {
-                    return row;
-                }
-            }
-        }
-    }
-
-    function getY (matrix) {
-        for (var row = 0; row < matrix.length; row++) {
-            for (var col = 0; col < matrix[row].length; col++) {
-                if (matrix[row][col] == 2) {
-                    return col;
-                }
-            }
+            ctx.drawImage(imagesArray[fieldMatrix[row][col]], col*100, row*100,98,98);
         }
     }
 }
@@ -57,32 +24,84 @@ function Player(x,y) {
     this.y = y;
     this.w = 98;
     this.h = 98;
-    fieldMatrix[this.y][this.x] = 3;
-    ctx.fillStyle = "yellow";
-
-
 
     this.draw = function () {
-        if (keyPressed == 'left') {
-            ctx.drawImage(playerImage,this.x*100+renderCounter,this.y*100,this.w,this.h);
-            renderCounter -=2;
-            if (renderCounter == 0) {
-                keyPressed = '';
-                renderCounter = 100;
+        if (keyPressed != '') {
+            switch (keyPressed) {
+                case 'left':
+                    ctx.drawImage(imagesArray[4], this.x * 100 + renderCounter, this.y * 100, this.w, this.h);
+                    break;
+                case 'right':
+                    ctx.drawImage(imagesArray[4], this.x * 100 - renderCounter, this.y * 100, this.w, this.h);
+                    break;
+                case 'up':
+                    ctx.drawImage(imagesArray[4], this.x * 100, this.y * 100 + renderCounter, this.w, this.h);
+                    break;
+                case 'down':
+                    ctx.drawImage(imagesArray[4], this.x * 100, this.y * 100 - renderCounter, this.w, this.h);
+                    break;
             }
+            endBoxAnimation();
         } else {
-            ctx.drawImage(playerImage,this.x*100,this.y*100,this.w,this.h);
+            ctx.drawImage(imagesArray[4], this.x * 100, this.y * 100, this.w, this.h);
         }
     };
 }
 
-function updatePlayerPosition(x,y) {
-    fieldMatrix[y][x] = 3;
+ function Target(x,y) {
+     this.x = x;
+     this.y = y;
+     this.w = 98;
+     this.h = 98;
+
+ }
+
+function endBoxAnimation() {
+    renderCounter -= 5;
+    if (renderCounter == 0) {
+        keyPressed = '';
+        renderCounter = 100;
+    }
 }
 
-function updateBoxPosition(x,y) {
-    fieldMatrix[y][x] = 2;
+function checkNextBlock(nextX,nextY,overX,overY,direction) {
+
+    var move = false;
+    if (fieldMatrix[nextY][nextX] == 0) { // check for empty space
+        move = true;
+    } else if ((fieldMatrix[nextY][nextX] == 2) && (fieldMatrix[overY][overX] != 1)) { // check for box
+        move = true;
+        fieldMatrix[nextY][nextX] = 0;
+        fieldMatrix[overY][overX] = 2;
+    }
+    if (move) {
+        keyPressed = direction;
+        switch (direction) {
+            case 'left': player.x--; break;
+            case 'right': player.x++; break;
+            case 'up': player.y--; break;
+            case 'down': player.y++; break;
+        }
+    }
 }
-function clearPlayerPosition(x,y) {
-    fieldMatrix[y][x] = 0;
+
+ var createImage = function(src) {
+     var img   = new Image();
+     img.src   = src;
+     return img;
+ };
+
+//test function to be deleted
+function printMatrix() {
+    for (var row = 0; row < fieldMatrix.length; row++) {
+        for (var col = 0; col < fieldMatrix[row].length; col++) {
+            console.log(fieldMatrix[row].join("-"));
+        }
+    }
 }
+
+ Array.prototype.drawTargets = function () {
+     for (var i = 0; i < targets.length; i++) {
+         ctx.drawImage(imagesArray[3], targets[i].x * 100, targets[i].y * 100, targets[i].w, targets[i].h);
+     }
+ };
