@@ -126,10 +126,10 @@ function printMatrix() {
 }
 
 
- Array.prototype.drawTargets = function () {
-     for (var i = 0; i < targets.length; i++) {
-         ctx.drawImage(imagesArray[3], targets[i].x * 100, targets[i].y * 100, targets[i].w, targets[i].h);
-     }
- };
+// Array.prototype.drawTargets = function () {
+//     for (var i = 0; i < targets.length; i++) {
+//         ctx.drawImage(imagesArray[3], targets[i].x * 100, targets[i].y * 100, targets[i].w, targets[i].h);
+//     }
+// };
 
 

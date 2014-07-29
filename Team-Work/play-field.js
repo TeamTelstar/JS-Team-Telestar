@@ -13,7 +13,8 @@ imagesArray.push(createImage("images/gamer.png"));
 
 var keyPressed = '';
 var player = 0;
-var targets = [];
+var objects = [];
+var boxes = [];
 var renderCounter = 100;
 
 var fieldMatrix = [
@@ -30,8 +31,8 @@ function initCanvas() {
     var animateInterval;
 
     player = new Player(2,2);
-    targets.push(new Object(4,2));
-//    boxes.push()
+    objects.push(new Object(4,2,'target1',imagesArray[3]));
+    boxes.push(new Object(3,2,'box1',imagesArray[2]))
 
     function animate() {
         ctx.save();
@@ -39,7 +40,13 @@ function initCanvas() {
 
         drawField();
         drawObjects();
-        targets.drawTargets();
+//        targets.drawTargets();
+        for (var i = 0; i < objects.length; i++) {
+            objects[i].draw();
+        }
+        for (var i = 0; i < boxes.length; i++) {
+            boxes[i].draw();
+        }
         player.draw();
 
         ctx.restore();
