@@ -9,11 +9,14 @@ body {
 #scoreBord{
     padding-bottom: 40px;
     margin-bottom: 0px;;
-    width: 800px;
+    width: 780px;
     border-color: #000000;
     border-style: solid;
     border-width: 1px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     background: linear-gradient(180deg, rgb(160, 160, 160) 30%, rgb(233, 230, 225) 70%);
+    font-size: 25px;
+    padding-left: 20px;
+    padding-top: 20px;
 }
