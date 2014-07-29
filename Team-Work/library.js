@@ -64,6 +64,7 @@ function endBoxAnimation() {
     }
 }
 
+
 function checkNextBlock(nextX,nextY,overX,overY,direction) {
 
     var move = false;
@@ -73,6 +74,7 @@ function checkNextBlock(nextX,nextY,overX,overY,direction) {
         move = true;
         fieldMatrix[nextY][nextX] = 0;
         fieldMatrix[overY][overX] = 2;
+        movesPrint();
     }
     if (move) {
         keyPressed = direction;
@@ -105,3 +107,4 @@ function printMatrix() {
          ctx.drawImage(imagesArray[3], targets[i].x * 100, targets[i].y * 100, targets[i].w, targets[i].h);
      }
  };
+
