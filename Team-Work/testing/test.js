@@ -1,22 +1,45 @@
+function User (theName, theEmail) {
+    this.name = theName;
+    this.email = theEmail;
+    this.quizScores = [];
+    this.currentScore = 0;
 
+    var alive = true;
 
-var pic = new Image();          // out of draw method
-pic.src = "Box.PNG";
+    this.showInfo = function () {
+        console.log(this.name);
 
-function initCanvas() {
-    var ctx = document.getElementById("canvas").getContext("2d");
-    var cW = ctx.canvas.width, cH = ctx.canvas.height;
-
-
-
-    function animate() {
-        ctx.drawImage(pic,0,0);
+        console.log("name: %s \nemail: %s", this.name, this.email);
     }
 
-    var animateInterval = setInterval(animate,30);
 
 }
 
-window.addEventListener('load', function (event) {
-    initCanvas();
-});
+User.prototype = {
+    constructor: User,
+    saveScore:function (theScoreToAdd)  {
+        this.quizScores.push(theScoreToAdd)
+    },
+    showNameAndScores:function ()  {
+        var scores = this.quizScores.length > 0 ? this.quizScores.join(",") : "No Scores Yet";
+        return this.name + " Scores: " + scores;
+    },
+    changeEmail:function (newEmail)  {
+        this.email = newEmail;
+        return "New Email Saved: " + this.email;
+    },
+    isAlive: function () {
+
+    }
+
+};
+
+function Man() {
+    console.log(Man.constructor);
+}
+Man();
+//
+//var user1 = new User('Deyan','myMail@gmail.com');
+//user1.name = 10;
+//user1.showInfo();
+
