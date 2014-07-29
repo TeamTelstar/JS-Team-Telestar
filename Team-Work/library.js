@@ -71,11 +71,9 @@ function Object(x,y,id,img) {
     this.w = 98;
     this.h = 98;
     this.img = img;
-    var objectType = this.id.substring(0, 3); // box or target
+//    var objectType = this.id.substring(0, 3); // box or target
 
-    if (objectType == "box") {
-        fieldMatrix[this.y][this.x] = 2;
-    }
+    fieldMatrix[this.y][this.x] = 2;
 
     this.draw = function() {
      ctx.drawImage(this.img, this.x * 100, this.y * 100, this.w, this.h);

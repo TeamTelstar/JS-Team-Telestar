@@ -7,7 +7,6 @@ var moves = {
     getPlayerMoves:function(){return this.playerMoves}
 }
 
-
 function movesPrint(){
     moves.playerMoved();
     var score = document.querySelector('#scoreBord');
