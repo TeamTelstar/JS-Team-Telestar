@@ -74,7 +74,7 @@ function checkNextBlock(nextX,nextY,overX,overY,direction) {
         move = true;
         fieldMatrix[nextY][nextX] = 0;
         fieldMatrix[overY][overX] = 2;
-        movesPrint();
+        moves.boxMoved();
     }
     if (move) {
         keyPressed = direction;

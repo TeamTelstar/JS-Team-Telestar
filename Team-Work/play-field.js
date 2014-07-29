@@ -47,7 +47,7 @@ function initCanvas() {
     animateInterval = setInterval(animate, 20);
 
    document.addEventListener('keydown', function(event) {
-
+       movesPrint();
        if (event.keyCode == 37) {
            checkNextBlock(player.x-1,player.y,player.x-2,player.y,'left');
 
