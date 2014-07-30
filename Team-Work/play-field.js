@@ -1,52 +1,24 @@
-/**
- * Created by PC on 28.7.2014 �..
- */
-var ctx;
-var cW, cH;
 
-var imagesArray = [];
-imagesArray.push(createImage("images/floor.png"));
-imagesArray.push(createImage("images/bricks.jpg"));
-imagesArray.push(createImage("images/box.png"));
-imagesArray.push(createImage("images/target.png"));
-imagesArray.push(createImage("images/gamer.png"));
+var ctx, cW, cH;
 
-var keyPressed = '';
-var player = 0;
-var objects = [];
-var boxes = [];
-var renderCounter = 100;
-
-var fieldMatrix = [
-    [1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,1],
-    [1,0,0,2,0,0,0,1],
-    [1,0,0,0,0,0,0,1],
-    [1,1,1,1,1,1,1,1]
-];
+var imagesArray = addImages();
+var level = 0, squareSize = 100, keyPressed = '';
+var fieldMatrix, player, boxes,targets, fieldW, fieldH, renderCounter;
 
 function initCanvas() {
     ctx = document.getElementById("canvas").getContext("2d");
     cW = ctx.canvas.width, cH = ctx.canvas.height;
-    var animateInterval;
 
-    player = new Player(2,2);
-    objects.push(new Object(4,2,'target1',imagesArray[3]));
-    boxes.push(new Object(3,2,'box1',imagesArray[2]))
+    loadNextLevel();
 
     function animate() {
         ctx.save();
         ctx.clearRect(0,0,cW,cH);
 
         drawField();
-        drawObjects();
-//        targets.drawTargets();
-        for (var i = 0; i < objects.length; i++) {
-            objects[i].draw();
-        }
-        for (var i = 0; i < boxes.length; i++) {
-            boxes[i].draw();
-        }
+        drawWallsAndFloors();
+        targets.drawObjects();
+        boxes.drawObjects();
         player.draw();
 
         ctx.restore();
@@ -55,7 +27,6 @@ function initCanvas() {
     animateInterval = setInterval(animate, 20);
 
    document.addEventListener('keydown', function(event) {
-       movesPrint();
        if (event.keyCode == 37) {
            checkNextBlock(player.x-1,player.y,player.x-2,player.y,'left');
        } else if (event.keyCode == 39) {
@@ -65,11 +36,10 @@ function initCanvas() {
        } else if (event.keyCode == 40) {
            checkNextBlock(player.x,player.y+1,player.x,player.y+2,'down');
        }
+       movesPrint();
 
    });
-
 }
-
 window.addEventListener('load', function (event) {
     initCanvas();
 

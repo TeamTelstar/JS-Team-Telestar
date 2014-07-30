@@ -8,11 +8,8 @@ var moves = {
 }
 
 function movesPrint(){
-    moves.playerMoved();
     var score = document.querySelector('#scoreBord');
     score.innerHTML = "Box pushed:"+" "+ moves.getBoxMoves() +" "+ "times"+" " + "Player moved"+" " + moves.getPlayerMoves()+" "+ "times"  ;
-    console.log(score);
-
 }
 
 

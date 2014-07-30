@@ -1,56 +1,99 @@
+
+
+var animateInterval;
+
 function drawField() {
-    for (var i = 0; i < cH/50; i++) {
+    for (var i = 0; i <= fieldW; i++) {
         ctx.beginPath();
-        ctx.moveTo(100*i,0);
-        ctx.lineTo(100*i,cH);
-        ctx.moveTo(0,100*i);
-        ctx.lineTo(cW,100*i);
+        ctx.moveTo(squareSize*i,0);
+        ctx.lineTo(squareSize*i,fieldH*squareSize);
+        ctx.stroke();
+        ctx.closePath();
+    }
+    for (var i = 0; i <= fieldH; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0,squareSize*i);
+        ctx.lineTo(fieldW*squareSize,squareSize*i);
         ctx.stroke();
         ctx.closePath();
     }
 }
 
-function drawObjects() {
+function drawWallsAndFloors() {
     for (var row = 0; row < fieldMatrix.length; row++) {
         for (var col = 0; col < fieldMatrix[row].length; col++) {
             if (fieldMatrix[row][col] == 1) {
-                ctx.drawImage(imagesArray[1], col*100, row*100,98,98);
+                ctx.drawImage(imagesArray[1], col*squareSize, row*squareSize,squareSize-2,squareSize-2);
             } else {
-                ctx.drawImage(imagesArray[0], col*100, row*100,98,98);
+                ctx.drawImage(imagesArray[0], col*squareSize, row*squareSize,squareSize-2,squareSize-2);
             }
         }
     }
 }
 
-function Player(x,y) {
+function Obj(x,y) {
     this.x = x;
     this.y = y;
-    this.w = 98;
-    this.h = 98;
+    this.w = squareSize-2;
+    this.h = squareSize-2;
+}
+// static method shared by all objects of type Obj or any inherited types
+Obj.prototype.draw = function() {
+ ctx.drawImage(this.img, this.x * squareSize, this.y * squareSize, this.w, this.h);
+};
 
+function Box(x,y) {
+     Obj.call(this,x,y);  // inehirtance, calling the parents constructor
+//     fieldMatrix[this.y][this.x] = 2;
+    this.image = imagesArray[2];
+}
+Box.prototype.draw = function() {  // overrides the Obj.prototype.draw function
+    ctx.drawImage(this.image,this.x*squareSize,this.y*squareSize,this.w,this.h);
+};
+
+function Target(x,y) {
+    Obj.call(this,x,y);
+    this.image = imagesArray[3];
+
+}
+Target.prototype.draw = function() {  // overrides the Obj.prototype.draw function
+    ctx.drawImage(this.image,this.x*squareSize,this.y*squareSize,this.w,this.h);
+};
+
+
+Array.prototype.drawObjects = function() {
+     for (var i = 0; i < this.length; i++) {
+         this[i].draw();
+     }
+ };
+
+function Player(x,y) {
+Obj.call(this,x,y);                   // calling the parent constructor
+    var playerImage = imagesArray[4]; // private variable
     this.draw = function () {
         if (keyPressed != '') {
             switch (keyPressed) {
                 case 'left':
-                ctx.drawImage(imagesArray[4], this.x * 100 + renderCounter,
-                    this.y * 100, this.w, this.h);
+                    ctx.drawImage(playerImage, this.x * squareSize + renderCounter, this.y * squareSize, this.w, this.h);
+                    break;
                 break;
                 case 'right':
-                ctx.drawImage(imagesArray[4], this.x * 100 - renderCounter,
-                    this.y * 100, this.w, this.h);
-                break;
+                    ctx.drawImage(playerImage, this.x * squareSize - renderCounter,
+                            this.y * squareSize, this.w, this.h);
+                    break;
                 case 'up':
-                ctx.drawImage(imagesArray[4], this.x * 100,
-                    this.y * 100 + renderCounter, this.w, this.h);
-                break;
+                    ctx.drawImage(playerImage, this.x * squareSize,
+                            this.y * squareSize + renderCounter, this.w, this.h);
+                     break;
                 case 'down':
-                ctx.drawImage(imagesArray[4], this.x * 100,
-                    this.y * 100 - renderCounter, this.w, this.h);
+
+                     ctx.drawImage(playerImage, this.x * squareSize,
+                    this.y * squareSize - renderCounter, this.w, this.h);
                 break;
             }
             endBoxAnimation();
         } else {
-            ctx.drawImage(imagesArray[4], this.x * 100, this.y * 100, this.w, this.h);
+            ctx.drawImage(playerImage, this.x * squareSize, this.y * squareSize, this.w, this.h);
         }
     };
 
@@ -58,36 +101,22 @@ function Player(x,y) {
         renderCounter -= 5;
         if (renderCounter == 0) {
             keyPressed = '';
-            renderCounter = 100;
+            renderCounter = squareSize;
+            if (gameOver(boxes, targets)) {
+                alert('level completed');
+                loadNextLevel();
+            }
         }
     }
 }
 
-function Object(x,y,id,img) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.w = 98;
-    this.h = 98;
-    this.img = img;
-//    var objectType = this.id.substring(0, 3); // box or target
-
-fieldMatrix[this.y][this.x] = 2;
-
-this.draw = function() {
-   ctx.drawImage(this.img, this.x * 100, this.y * 100, this.w, this.h);
-}
-}
-
-
 function checkNextBlock(nextX,nextY,overX,overY,direction) {
 
     var move = false;
-    var currentBox;
     if (fieldMatrix[nextY][nextX] == 0) { // check for empty space
         move = true;
     } else if ((fieldMatrix[nextY][nextX] == 2) &&  // check for box
-      (fieldMatrix[overY][overX] != 1)) {
+             (fieldMatrix[overY][overX] != 1)) {
         move = true;
         for (var i = 0; i < boxes.length; i++) {
             if (boxes[i].x == nextX && boxes[i].y == nextY) {
@@ -95,12 +124,13 @@ function checkNextBlock(nextX,nextY,overX,overY,direction) {
                 boxes[i].y = overY;
             }
         }
-
         fieldMatrix[nextY][nextX] = 0;
         fieldMatrix[overY][overX] = 2;
+
         moves.boxMoved();
     }
     if (move) {
+        moves.playerMoved();
         keyPressed = direction;
         switch (direction) {
             case 'left': player.x--; break;
@@ -111,12 +141,6 @@ function checkNextBlock(nextX,nextY,overX,overY,direction) {
     }
 }
 
-var createImage = function(src) {
-   var img = new Image();
-   img.src = src;
-   return img;
-};
-
 //test function to be deleted
 function printMatrix() {
     for (var row = 0; row < fieldMatrix.length; row++) {
@@ -125,28 +149,52 @@ function printMatrix() {
 }
 
 function gameOver (boxes, targets) {
-    var counter = 0;            //counter for matches 
-
+    var counter = 0;            //counter for matches
     for (var i = 0; i < boxes.length; i++) {
         for (var j = 0; j < targets.length; j++) {      // nested loop checking if box and target have same coordinates
             if ((targets[j].x === boxes[i].x) && (targets[j].y === boxes[i].y)) {
                 counter += 1;                           // if match found counter++
             }
         }
-    }
+    }                                         //if all boxes matches targets
+    return counter === targets.length;  //return true
 
-    if (counter === targets.length) {   //if all boxes matches targets
-        return true;                    //return true
-    } else {
-        return false;
+}
+
+function loadNextLevel() {
+    level++;
+    fieldMatrix = levelObjects[level].matrix;
+    squareSize =  levelObjects[level].sqSize;
+    player = levelObjects[level].player;
+    boxes = levelObjects[level].boxes;
+    targets = levelObjects[level].targets;
+    fieldW = fieldMatrix[0].length;
+    fieldH = fieldMatrix.length;
+    renderCounter = squareSize;
+
+    // upaditing coordinates
+    for (var i = 0; i < boxes.length; i++) {
+        fieldMatrix[boxes[i].y][boxes[i].x] = 2;
     }
 }
 
+var createImage = function(src) {
+    var img = new Image();
+    img.src = src;
+    return img;
+};
 
-// Array.prototype.drawTargets = function () {
-//     for (var i = 0; i < targets.length; i++) {
-//         ctx.drawImage(imagesArray[3], targets[i].x * 100, targets[i].y * 100, targets[i].w, targets[i].h);
-//     }
-// };
+var addImages = function() {
+    var imgArray = [];
+    imgArray.push(createImage("images/floor.png"));
+    imgArray.push(createImage("images/bricks.jpg"));
+    imgArray.push(createImage("images/box.png"));
+    imgArray.push(createImage("images/target.png"));
+    imgArray.push(createImage("images/gamer.png"));
+    return imgArray;
+};
+
+
+
 
 
