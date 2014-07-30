@@ -1,5 +1,4 @@
-
- function drawField() {
+function drawField() {
     for (var i = 0; i < cH/50; i++) {
         ctx.beginPath();
         ctx.moveTo(100*i,0);
@@ -33,21 +32,21 @@ function Player(x,y) {
         if (keyPressed != '') {
             switch (keyPressed) {
                 case 'left':
-                    ctx.drawImage(imagesArray[4], this.x * 100 + renderCounter,
-                                this.y * 100, this.w, this.h);
-                    break;
+                ctx.drawImage(imagesArray[4], this.x * 100 + renderCounter,
+                    this.y * 100, this.w, this.h);
+                break;
                 case 'right':
-                    ctx.drawImage(imagesArray[4], this.x * 100 - renderCounter,
-                            this.y * 100, this.w, this.h);
-                    break;
+                ctx.drawImage(imagesArray[4], this.x * 100 - renderCounter,
+                    this.y * 100, this.w, this.h);
+                break;
                 case 'up':
-                    ctx.drawImage(imagesArray[4], this.x * 100,
-                            this.y * 100 + renderCounter, this.w, this.h);
-                    break;
+                ctx.drawImage(imagesArray[4], this.x * 100,
+                    this.y * 100 + renderCounter, this.w, this.h);
+                break;
                 case 'down':
-                    ctx.drawImage(imagesArray[4], this.x * 100,
-                            this.y * 100 - renderCounter, this.w, this.h);
-                    break;
+                ctx.drawImage(imagesArray[4], this.x * 100,
+                    this.y * 100 - renderCounter, this.w, this.h);
+                break;
             }
             endBoxAnimation();
         } else {
@@ -73,12 +72,12 @@ function Object(x,y,id,img) {
     this.img = img;
 //    var objectType = this.id.substring(0, 3); // box or target
 
-    fieldMatrix[this.y][this.x] = 2;
+fieldMatrix[this.y][this.x] = 2;
 
-    this.draw = function() {
-     ctx.drawImage(this.img, this.x * 100, this.y * 100, this.w, this.h);
-    }
- }
+this.draw = function() {
+   ctx.drawImage(this.img, this.x * 100, this.y * 100, this.w, this.h);
+}
+}
 
 
 function checkNextBlock(nextX,nextY,overX,overY,direction) {
@@ -88,7 +87,7 @@ function checkNextBlock(nextX,nextY,overX,overY,direction) {
     if (fieldMatrix[nextY][nextX] == 0) { // check for empty space
         move = true;
     } else if ((fieldMatrix[nextY][nextX] == 2) &&  // check for box
-              (fieldMatrix[overY][overX] != 1)) {
+      (fieldMatrix[overY][overX] != 1)) {
         move = true;
         for (var i = 0; i < boxes.length; i++) {
             if (boxes[i].x == nextX && boxes[i].y == nextY) {
@@ -112,16 +111,34 @@ function checkNextBlock(nextX,nextY,overX,overY,direction) {
     }
 }
 
- var createImage = function(src) {
-     var img = new Image();
-     img.src = src;
-     return img;
- };
+var createImage = function(src) {
+   var img = new Image();
+   img.src = src;
+   return img;
+};
 
 //test function to be deleted
 function printMatrix() {
     for (var row = 0; row < fieldMatrix.length; row++) {
-            console.log(fieldMatrix[row].join("-"));
+        console.log(fieldMatrix[row].join("-"));
+    }
+}
+
+function gameOver (boxes, targets) {
+    var counter = 0;            //counter for matches 
+
+    for (var i = 0; i < boxes.length; i++) {
+        for (var j = 0; j < targets.length; j++) {      // nested loop checking if box and target have same coordinates
+            if ((targets[j].x === boxes[i].x) && (targets[j].y === boxes[i].y)) {
+                counter += 1;                           // if match found counter++
+            }
+        }
+    }
+
+    if (counter === targets.length) {   //if all boxes matches targets
+        return true;                    //return true
+    } else {
+        return false;
     }
 }
 
