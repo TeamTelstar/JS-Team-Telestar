@@ -1,45 +1,47 @@
 
 
-var animateInterval;
-
-function drawField() {
-    for (var i = 0; i <= fieldW; i++) {
-        ctx.beginPath();
-        ctx.moveTo(squareSize*i,0);
-        ctx.lineTo(squareSize*i,fieldH*squareSize);
-        ctx.stroke();
-        ctx.closePath();
-    }
-    for (var i = 0; i <= fieldH; i++) {
-        ctx.beginPath();
-        ctx.moveTo(0,squareSize*i);
-        ctx.lineTo(fieldW*squareSize,squareSize*i);
-        ctx.stroke();
-        ctx.closePath();
-    }
-}
+//
+//function drawField() {
+//    for (var i = 0; i <= fieldW; i++) {
+//        ctx.beginPath();
+//        ctx.moveTo(squareSize*i,0);
+//        ctx.lineTo(squareSize*i,fieldH*squareSize);
+//        ctx.stroke();
+//        ctx.closePath();
+//    }
+//    for (var i = 0; i <= fieldH; i++) {
+//        ctx.beginPath();
+//        ctx.moveTo(0,squareSize*i);
+//        ctx.lineTo(fieldW*squareSize,squareSize*i);
+//        ctx.stroke();
+//        ctx.closePath();
+//    }
+//}
 
 function drawWallsAndFloors() {
     for (var row = 0; row < fieldMatrix.length; row++) {
         for (var col = 0; col < fieldMatrix[row].length; col++) {
             if (fieldMatrix[row][col] == 1) {
                 ctx.drawImage(imagesArray[1], col*squareSize, row*squareSize,squareSize-2,squareSize-2);
-            } else {
+            } else if (fieldMatrix[row][col] == 0){
                 ctx.drawImage(imagesArray[0], col*squareSize, row*squareSize,squareSize-2,squareSize-2);
             }
         }
     }
 }
 
-function Obj(x,y) {
+function Obj(x,y,img) {
     this.x = x;
     this.y = y;
-    this.w = squareSize-2;
-    this.h = squareSize-2;
+    this.img = img;
 }
+Obj.prototype.size = 0;
+Obj.changeSize = function (size) { // setterFunction
+    Obj.prototype.size = size;
+};
 // static method shared by all objects of type Obj or any inherited types
 Obj.prototype.draw = function() {
- ctx.drawImage(this.img, this.x * squareSize, this.y * squareSize, this.w, this.h);
+ ctx.drawImage(this.img, this.x * squareSize, this.y * squareSize, squareSize, squareSize);
 };
 
 function Box(x,y) {
@@ -48,7 +50,7 @@ function Box(x,y) {
     this.image = imagesArray[2];
 }
 Box.prototype.draw = function() {  // overrides the Obj.prototype.draw function
-    ctx.drawImage(this.image,this.x*squareSize,this.y*squareSize,this.w,this.h);
+    ctx.drawImage(this.image,this.x*squareSize,this.y*squareSize,squareSize,squareSize);
 };
 
 function Target(x,y) {
@@ -57,7 +59,7 @@ function Target(x,y) {
 
 }
 Target.prototype.draw = function() {  // overrides the Obj.prototype.draw function
-    ctx.drawImage(this.image,this.x*squareSize,this.y*squareSize,this.w,this.h);
+    ctx.drawImage(this.image,this.x*squareSize,this.y*squareSize,squareSize,squareSize);
 };
 
 
@@ -74,26 +76,26 @@ Obj.call(this,x,y);                   // calling the parent constructor
         if (keyPressed != '') {
             switch (keyPressed) {
                 case 'left':
-                    ctx.drawImage(playerImage, this.x * squareSize + renderCounter, this.y * squareSize, this.w, this.h);
+                    ctx.drawImage(playerImage, this.x * squareSize + renderCounter, this.y * squareSize, squareSize, squareSize);
                     break;
                 break;
                 case 'right':
                     ctx.drawImage(playerImage, this.x * squareSize - renderCounter,
-                            this.y * squareSize, this.w, this.h);
+                            this.y * squareSize, squareSize, squareSize);
                     break;
                 case 'up':
                     ctx.drawImage(playerImage, this.x * squareSize,
-                            this.y * squareSize + renderCounter, this.w, this.h);
+                            this.y * squareSize + renderCounter, squareSize, squareSize);
                      break;
                 case 'down':
 
                      ctx.drawImage(playerImage, this.x * squareSize,
-                    this.y * squareSize - renderCounter, this.w, this.h);
+                    this.y * squareSize - renderCounter, squareSize,squareSize);
                 break;
             }
             endBoxAnimation();
         } else {
-            ctx.drawImage(playerImage, this.x * squareSize, this.y * squareSize, this.w, this.h);
+            ctx.drawImage(playerImage, this.x * squareSize, this.y * squareSize, squareSize, squareSize);
         }
     };
 
@@ -171,6 +173,7 @@ function loadNextLevel() {
     fieldW = fieldMatrix[0].length;
     fieldH = fieldMatrix.length;
     renderCounter = squareSize;
+    Obj.changeSize(squareSize);
 
     // upaditing coordinates
     for (var i = 0; i < boxes.length; i++) {

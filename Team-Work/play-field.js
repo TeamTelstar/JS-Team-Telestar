@@ -1,9 +1,8 @@
 
 var ctx, cW, cH;
-
 var imagesArray = addImages();
-var level = 0, squareSize = 100, keyPressed = '';
-var fieldMatrix, player, boxes,targets, fieldW, fieldH, renderCounter;
+var level = 0, squareSize = Obj.size, keyPressed = '';
+var fieldMatrix, player, boxes,targets, fieldW, fieldH, renderCounter, animateInterval;
 
 function initCanvas() {
     ctx = document.getElementById("canvas").getContext("2d");
@@ -15,7 +14,7 @@ function initCanvas() {
         ctx.save();
         ctx.clearRect(0,0,cW,cH);
 
-        drawField();
+//        drawField();
         drawWallsAndFloors();
         targets.drawObjects();
         boxes.drawObjects();
