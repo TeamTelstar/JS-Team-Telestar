@@ -164,7 +164,7 @@ function gameOver (boxes, targets) {
 }
 
 function loadNextLevel() {
-    level++;
+    level = 14;
     fieldMatrix = levelObjects[level].matrix;
     squareSize =  levelObjects[level].sqSize;
     player = levelObjects[level].player;
