@@ -1,5 +1,5 @@
 body {
-    margin: 40px;
+    margin: 0;
     background: #666;
 }
 #canvas {
@@ -7,19 +7,17 @@ body {
     border: #000 1px solid;
 }
 #scoreBord{
-    padding-bottom: 40px;
-    margin-bottom: 0px;;
-    width: 98.2%;
+    width: 93.2%;
     border: 1px solid black;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-radius: 10px 10px 0 0;
     background: linear-gradient(180deg, rgb(160, 160, 160) 30%, rgb(233, 230, 225) 70%);
     font-size: 25px;
-    padding-left: 20px;
-    padding-top: 20px;
+    padding: 0 40px;
+    line-height: 80px;
 }
-.div-wrapper {
-
+.wrapper {
+    margin: 0 auto;
+    width: 1200px;
 }
 .clearfix:after {
     content: ".";
@@ -30,6 +28,18 @@ body {
     height: 0;
 }
 
+#reset {
+    width: 80px;
+    height: 40px;
+    font-size: 25px;
+    line-height: 25px;
+
+}
+
+
+#mouse {
+    font-size: 30px;
+}
 .clearfix {
     display: inline-block;
 }

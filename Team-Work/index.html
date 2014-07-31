@@ -2,22 +2,28 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Psuing boxes</title>
+    <title>Pushing boxes</title>
 
     <script src="scoreBord.js"></script>
     <script src="library.js"></script>
+    <script src="event-handlers.js"></script>
     <script src="play-field.js"></script>
     <script src="levels.js"></script>
 
     <link href="styles.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <div class="div-wrapper clearfix">
-        <p id="scoreBord">Box pushed: 0 times Player moved 0 times </p>
-        <canvas id="canvas" width="1200px" height="800px">
+    <div class="wrapper">
+        <div class="clearfix">
+            <div id="scoreBord">
+                Box pushed: 0 times Player moved 0 times
+            </div>
 
-        </canvas>
+            <canvas id="canvas" width="1200px" height="800px">
+
+            </canvas>
+        </div>
+        <div id="mouse"></div>
     </div>
-    <!--<img src="images/Box.PNG" alt="noPic"/>-->
 </body>
 </html>

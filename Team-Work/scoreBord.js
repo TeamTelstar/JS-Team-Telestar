@@ -6,10 +6,11 @@ var moves = {
     getBoxMoves:function(){return this.boxMoves},
     getPlayerMoves:function(){return this.playerMoves}
 }
-
+var score;
 function movesPrint(){
-    var score = document.querySelector('#scoreBord');
+    score= document.querySelector('#scoreBord');
     score.innerHTML = "Box pushed:"+" "+ moves.getBoxMoves() +" "+ "times"+" " + "Player moved"+" " + moves.getPlayerMoves()+" "+ "times"  ;
+
 }
 
 

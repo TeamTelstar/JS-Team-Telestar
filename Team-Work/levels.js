@@ -19,7 +19,7 @@ var levelObjects= {
             [1,1,1,1,1],
             [1,0,0,0,1],
             [1,0,0,1,1],
-            [1,1,0,1,1],
+            [1,1,0,1,-1],
             [-1,1,0,1,-1],
             [-1,1,1,1,-1]],
         sqSize: 80,
@@ -248,7 +248,7 @@ var levelObjects= {
         sqSize:45,
         player: new Player(1,4),
         boxes: [new Box(1,3)],
-        target:[ new Target(16,4), new Target(17,4), new Target(17,5), new Target(16,6), new Target(17,6)]
+        targets:[ new Target(16,4), new Target(17,4), new Target(17,5), new Target(16,6), new Target(17,6)]
 
     }
 };

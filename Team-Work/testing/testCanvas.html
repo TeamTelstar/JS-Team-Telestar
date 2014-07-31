@@ -1,47 +1,21 @@
 <!DOCTYPE html>
 <html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Pushing boxes</title>
+    <script src="test.js"></script>
+    <style>
+        #mouse {
+            color: black;
+            /*font-size: 40;*/
+        }
+    </style>
+</head>
 <body>
 
-<p>A script on this page starts this clock:</p>
+<canvas id="canvas" width="1200px" height="800px">
 
-<p id="demo"></p>
-<p id="demo2"></p>
-
-<button id="start">Start time</button>
-<button onclick="myStopFunction()">Stop time</button>
-
-<script>
-
-    var start = document.getElementById('start');
-    var t = 0;
-    var myVar;
-    var yourVar;
-
-    var t2 = 0;
-
-    function startInterver() {
-        myVar = setInterval(myTimer, 1000);
-        yourVar = setInterval(doSomething, 500);
-    }
-
-    function myTimer() {
-        t++;
-        document.getElementById("demo").innerHTML = t;
-    }
-
-    function myStopFunction() {
-        clearInterval(myVar);
-        clearInterval(yourVar);
-    }
-
-    function doSomething() {
-        t2++;
-        document.getElementById("demo2").innerHTML = t2;
-
-    }
-    start.addEventListener('click', startInterver );
-
-</script>
-
+</canvas>
+<h1 id="mouse">hi</h1>
 </body>
 </html>
