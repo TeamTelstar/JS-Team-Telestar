@@ -246,9 +246,18 @@ var levelObjects= {
 
         ],
         sqSize:45,
-        player: new Player(1,4),
-        boxes: [new Box(1,3)],
-        targets:[ new Target(16,4), new Target(17,4), new Target(17,5), new Target(16,6), new Target(17,6)]
+        player: new Player(14,2),
+        boxes: [
+            new Box(14,10),new Box(14,12),new Box(14,8),new Box(14,6),new Box(14,4),
+            new Box(10,2),new Box(9,3),new Box(4,5),new Box(4,6),new Box(7,5),
+            new Box(3,10),new Box(5,11),new Box(5,12),new Box(7,10),new Box(8,13),
+            new Box(9,13),new Box(9,11),new Box(9,9),new Box(10,10),new Box(11,11),
+        ],
+        targets:[
+            new Target(16,4), new Target(17,4), new Target(17,5), new Target(16,6), new Target(17,6),
+            new Target(17,7), new Target(16,8), new Target(17,8), new Target(17,9), new Target(16,10),
+            new Target(17,10), new Target(17,11), new Target(16,12), new Target(17,12), new Target(16,13),
+            new Target(17,13), new Target(15,13), new Target(14,13), new Target(14,12), new Target(14,10)]
 
     }
 };

@@ -144,6 +144,7 @@ function isLevelCompleted (targets) {
 }
 
 function loadNextLevel() {
+    level = 14;
     fieldMatrix = clone(levelObjects[level].matrix);
     squareSize =  clone(levelObjects[level].sqSize);
     player = levelObjects[level].player;
